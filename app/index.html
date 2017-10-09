@@ -15,6 +15,10 @@
 <script>
     const setInter = setInterval(() => {
         if(window.F) {
+            //回调函数依赖于模块./js/event和./js/dom，F.module函数内部根据这个依赖模块的长度进行循环，分别调用loadmodule函数，loadmodule函数用来加载
+            //模块，也就是创建<script>标签，引入这两个模块所在的文件地址。加载时异步的  所以在加载的过程中会进行其他操作，你不知道什么时候加载结束，但是有
+            //如果加载成功的话，./js/event.js文件会被执行。setmodule来设置这个module的状态为已经加载，并输出一些数据或者方法，调用所以依赖本module的函数
+            //从而达到异步  所谓异步就是你要知道函数虽然不是按照顺序调用，但是你要知道调用的时机。
             F.module(['./js/event', './js/dom'], function (event, dom) {
                 event.on('demo', 'click', function() {
                     dom.html('demo', 'success');

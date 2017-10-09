@@ -126,6 +126,17 @@
                     // 增加未加载依赖模块数量统计
                     depsCount++;
                     // 异步加载依赖模块
+                    //假如一个模块a依赖多个其他模块如b、c，那么会调用loadModule初始化b、c，并把function(mod) {
+                        depsCount--;
+                        params[i] = mod;
+                        if(depsCount === 0) {
+                        setModule(url, params, callback);
+                        //}这个回调函数存入b\c模块的onload数组中，存入后，创建<script>标签，引入b、c模块，这里是异步的，如果b、c模块一旦
+                           // 加载完毕，会再次调用这个F.module函数，若b、c模块没有依赖于其他模块，那么他们
+                            //会执行setmoudule函数，设置自己(本模块)的状态为loaded，并执行保存在onload中的函数，会调用刚刚的那个回调。等到
+                            //depscount为0，就会调用setmodule来设置a模块。大体如此，还有许多细节问题
+                 
+                   //参数mod是所来来模块的export。
                     loadModule(deps[i], function(mod) {
                         // 依赖模块序列中添加依赖模块数量统一减一
                         depsCount--;
